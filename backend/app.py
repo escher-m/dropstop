@@ -201,7 +201,7 @@ def search_sourceinfi(search_query):
 # Route to handle search and display products in three columns, sorted by price within each source
 @app.route('/')
 def home():
-    return "Flask is running!"
+    return "Flask is running with Gunicorn!"
 
 @app.route('/search', methods=['GET'])
 def search():
@@ -229,4 +229,4 @@ def search():
     return jsonify(results)
 
 if __name__ == '__main__':
-    app.run(debug=True, host='localhost', port=8000)
+    app.run()
