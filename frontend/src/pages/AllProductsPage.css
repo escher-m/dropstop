@@ -1,0 +1,103 @@
+.all-products-page {
+    overflow-x: hidden;
+}
+
+/*.all-products-byline {*/
+/*    font-size: 1.5em;*/
+/*    text-align: center;*/
+/*    !*margin: 50px 0;*!*/
+/*}*/
+
+.all-results-container {
+    overflow-x: hidden;
+    margin-top: 50px;
+    align-items: center;
+    /*justify-content: center;*/
+    /*align-items: center;*/
+}
+
+.all-source-row {
+    display: flex;
+    flex-direction: column;
+    /*align-items: center;*/
+    /*overflow-x: hidden;*/
+    /*align-items: center;*/
+    /*width: 100%;*/
+}
+
+.all-source-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /*width: 100%;*/
+    margin-bottom: 10px;
+    background-color: wheat;
+    color: black;
+    border-radius: 10px;
+    /*overflow-x: hidden*/
+}
+
+.all-source-header h2 {
+    margin-left: 20px;
+}
+
+.all-source-logo {
+    width: auto;
+    height: 80px;
+    margin-right: 20px;
+}
+
+.all-product-row {
+    display: flex;
+    /*justify-content: center;*/
+    align-items: center;
+    position: relative;
+    /*overflow: hidden;*/
+    flex-wrap: wrap;
+    margin-bottom: 100px;
+    margin-top: 10px;
+    /*overflow-x: hidden;*/
+}
+
+.all-products {
+    display: flex;
+    /*overflow-x: hidden;*/
+    flex-wrap: wrap;  /* Ensure products are displayed in multiple rows */
+    justify-content: center;
+    gap: 10px;
+    /*align-items: center;*/
+}
+
+.all-product-box {
+    width: 220px;
+    margin-right: 10px;
+    background-color: #1f1f1f;
+    padding: 5px;
+    /*color: white;*/
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    align-items: center;
+}
+
+.all-product-box:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.all-product-box a {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.all-product-image {
+    width: 220px;
+    height: 220px;
+    object-fit: cover;
+}
+
+.all-product-box p {
+    margin: 5px 0;  /* Space between product details */
+}
+
+

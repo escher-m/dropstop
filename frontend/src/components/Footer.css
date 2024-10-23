@@ -1,0 +1,24 @@
+.footer {
+    position: relative;
+    bottom: 0;
+    /*width: 100%;*/
+    background-color: #1f1f1f; /* Dark grey */
+    padding: 40px;
+    text-align: center;
+    color: #ffffff; /* White text for readability */
+    border-top: 2px solid #f0c418; /* Yellow border to tie it all together */
+    justify-content: center;
+}
+
+.footer-link {
+    color: #9ae66e; /* Green links */
+    margin: 15px;
+    text-decoration: none;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1rem;
+}
+
+.footer-link:hover {
+    color: #f0c418; /* Yellow hover effect */
+    text-decoration: underline;
+}
