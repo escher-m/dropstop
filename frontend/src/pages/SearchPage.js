@@ -104,7 +104,7 @@ const SearchPage = () => {
                     <div className="source-row" key={source}>
                         <div className="source-header">
                             <h2>{source}</h2>
-                            <img className="source-logo" src={`/logos/${source}.png`} alt={`${source} logo`} />
+                            <img className="source-logo" src={`${process.env.PUBLIC_URL}/logos/${source}.png`} alt={`${source} logo`} />
                             <div className="source-controls">
                                 <button className="show-all-button" onClick={() => showAllProducts(source)}>
                                     Show All
