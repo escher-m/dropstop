@@ -73,7 +73,7 @@ const SearchPage = () => {
     const showAllProducts = (source) => {
         const allProducts = JSON.stringify(results[source]); // Convert the product array to a string
         const encodedProducts = encodeURIComponent(allProducts); // Encode it for the URL
-        window.open(`/all-products?products=${encodedProducts}&source=${source}`, '_blank');
+        window.open(`${process.env.PUBLIC_URL}/all-products?products=${encodedProducts}&source=${source}`, '_blank');
     };
 
 
