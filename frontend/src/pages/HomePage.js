@@ -43,27 +43,27 @@ function HomePage() {
             <div className="homebody">
                 <div className="usp-container">
                     <div className="usp">
-                        <img src="./homepage/usp1.jpg" alt="USP 1" className="usp-logo"/>
+                        <img src="${process.env.PUBLIC_URL}/homepage/usp1.jpg" alt="USP 1" className="usp-logo"/>
                         <p>Find Winning Products Quickly</p>
                     </div>
                     <div className="usp">
-                        <img src="./homepage/usp2.jpg" alt="USP 2" className="usp-logo"/>
+                        <img src="${process.env.PUBLIC_URL}/homepage/usp2.jpg" alt="USP 2" className="usp-logo"/>
                         <p>Best Supplier Integration</p>
                     </div>
                     <div className="usp">
-                        <img src="./homepage/usp3.jpg" alt="USP 3" className="usp-logo"/>
+                        <img src="${process.env.PUBLIC_URL}/homepage/usp3.jpg" alt="USP 3" className="usp-logo"/>
                         <p>Real-Time Price Comparisons</p>
                     </div>
                     <div className="usp">
-                        <img src="./homepage/usp6.jpg" alt="USP 4" className="usp-logo"/>
+                        <img src="${process.env.PUBLIC_URL}/homepage/usp6.jpg" alt="USP 4" className="usp-logo"/>
                         <p>User-Friendly Product Sorting Tools</p>
                     </div>
                     <div className="usp">
-                        <img src="./homepage/usp4.jpg" alt="USP 5" className="usp-logo"/>
+                        <img src="${process.env.PUBLIC_URL}/homepage/usp4.jpg" alt="USP 5" className="usp-logo"/>
                         <p>Expert Insights and Resources</p>
                     </div>
                     <div className="usp">
-                        <img src="./homepage/usp9.jpg" alt="USP 6" className="usp-logo"/>
+                        <img src="${process.env.PUBLIC_URL}/homepage/usp9.jpg" alt="USP 6" className="usp-logo"/>
                         <p>Dedicated Customer Support</p>
                     </div>
                 </div>
