@@ -85,7 +85,7 @@ function Layout() {
 
 function App() {
     return (
-        <Router>
+        <Router basename="/dropstop">
             <Layout />
         </Router>
     );
