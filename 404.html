@@ -5,11 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Page Not Found</title>
     <script>
-        // Redirect to index.html for handling by React Router
-        window.location.href = `${window.location.origin}/dropstop/index.html`;
+        // Redirects to the correct path based on the current URL
+        window.onload = function() {
+            const currentPath = window.location.pathname;
+
+            // Check the current path and redirect accordingly
+            if (currentPath === "/dropstop/about-us") {
+                window.location.href = "/dropstop/about-us";
+            } else if (currentPath === "/dropstop/contact-us") {
+                window.location.href = "/dropstop/contact-us";
+            } else if (currentPath === "/dropstop/blog") {
+                window.location.href = "/dropstop/blog";
+            } else if (currentPath === "/dropstop/source-from-suppliers") {
+                window.location.href = "/dropstop/source-from-suppliers";
+            } else if (currentPath === "/dropstop/roposo-sorter") {
+                window.location.href = "/dropstop/roposo-sorter";
+            } else if (currentPath === "/dropstop/all-products") {
+                window.location.href = "/dropstop/all-products";
+            } else {
+                // Default redirect to homepage if the path doesn't match
+                window.location.href = "/dropstop/";
+            }
+        }
     </script>
 </head>
 <body>
-<h1>404 - Page Not Found</h1>
+<h1>Redirecting...</h1>
 </body>
 </html>
