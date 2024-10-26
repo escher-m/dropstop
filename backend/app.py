@@ -3,6 +3,15 @@ from flask_cors import CORS
 import requests
 from bs4 import BeautifulSoup
 import logging
+import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file if it exists
+load_dotenv()
+
+# Access the email and password
+email = os.getenv('SOURCE_INFI_EMAIL')
+password = os.getenv('SOURCE_INFI_PASSWORD')
 
 app = Flask(__name__)
 CORS(app)
@@ -147,22 +156,47 @@ def search_roposo_clout(query):
 
 # SourceInfi Scraper
 
-def search_sourceinfi(search_query):
+def login_to_sourceinfi(username, password):
+    login_url = "https://seller.sourceinfi.com/"
+    payload = {
+        "email": username,
+        "password": password,
+        "submit": 'Log in'
+        # Add other fields as required by the login form
+    }
+
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36",
+    }
+
+    session = requests.Session()  # Use a session to persist cookies
+    response = session.post(login_url, headers=headers, data=payload)
+
+    if response.status_code == 200:
+        logger.debug("Login successful!")
+        return session  # Return the session with cookies
+    else:
+        logger.error("Login failed!")
+        return None
+
+def search_sourceinfi(username, password, search_query):
+    session = login_to_sourceinfi(username, password)
+
+    if session is None:
+        return []  # Return an empty list if login failed
+
     url = f"https://seller.sourceinfi.com/sellers-v1/product/index?filter%5Bproduct_search%5D={search_query}&filter%5Bsort%5D=new_arrival&filter%5Bproduct_status%5D=&filter%5Bcats_id%5D="
 
     headers = {
         "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36",
-        # Add other headers as needed
     }
 
-    cookies = {
-        '_fw_crm_v': '53306e37-9e16-4bc3-9103-d5b805302ecd',
-        '_ga': 'GA1.1.1548602773.1724329561',
-        'ci_session': 'emnf62g50fgm2sq50em0o9qmhuf2ejnt',
-        # Add any additional cookies here
-    }
+    response = session.get(url, headers=headers)
 
-    response = requests.get(url, headers=headers, cookies=cookies)
+    if response.status_code != 200:
+        logger.error("Search request failed!")
+        return []
+
     soup = BeautifulSoup(response.text, 'html.parser')
 
     products = []
@@ -197,8 +231,6 @@ def search_sourceinfi(search_query):
 
     return products  # Return the list of products directly
 
-
-# Route to handle search and display products in three columns, sorted by price within each source
 @app.route('/')
 def home():
     return "Flask is running with Gunicorn!"
@@ -212,7 +244,7 @@ def search():
     # Search across all sources
     indiamart_results = search_indiamart(query)
     roposo_results = search_roposo_clout(query)
-    sourceinfi_results = search_sourceinfi(query)
+    sourceinfi_results = search_sourceinfi(email,password,query)
 
     # Sort by price within each source
     indiamart_sorted = sorted(indiamart_results, key=lambda x: x['price'] if x['price'] else float('inf'))
@@ -229,4 +261,5 @@ def search():
     return jsonify(results)
 
 if __name__ == '__main__':
+    #app.run(debug=True, host='localhost', port=8000)
     app.run()

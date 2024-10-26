@@ -35,6 +35,8 @@ const SearchPage = () => {
         setLoading(true);  // Start loading
         try {
             const response = await axios.get(`https://dropstop.onrender.com/search?q=${query}`);
+            // const response = await axios.get(`http://localhost:8000/search?q=${query}`);
+
             setResults(response.data);
             const initialVisible = {};
             const initialIndex = {};

@@ -18,7 +18,7 @@ const AllProductsPage = () => {
                 <div className="all-source-row">
                     <div className="all-source-header">
                         <h2>{source}</h2>
-                        <img className="all-source-logo" src={`/logos/${source}.png`} alt={`${source} logo`} />
+                        <img className="all-source-logo" src={`${process.env.PUBLIC_URL}/logos/${source}.png`} alt={`${source} logo`} />
                     </div>
                     <div className="all-product-row">
                         <div className="all-products">
