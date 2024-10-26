@@ -7,7 +7,8 @@ const AllProductsPage = () => {
     const queryParams = new URLSearchParams(location.search);
 
     const source = queryParams.get('source');
-    const products = JSON.parse(queryParams.get('products') || '[]'); // Parse products from query params
+    // const products = JSON.parse(queryParams.get('products') || '[]'); // Parse products from query params
+    const products = JSON.parse(localStorage.getItem('allProducts'));
 
     console.log("Source:", source);
     console.log("Products:", products); // Log the products to debug

@@ -5,6 +5,7 @@ import SearchPage from './pages/SearchPage';
 import RoposoSorterPage from './pages/RoposoSorterPage';
 import AboutUsPage from './pages/AboutUs';
 import ContactUsPage from './pages/ContactUs';
+import PrivacyPolicyPage from "./pages/PrivacyPolicy";
 import BlogPage from './pages/Blog';
 import './App.css';
 import Footer from "./components/Footer";
@@ -33,6 +34,9 @@ function Layout() {
             break;
         case '/contact-us':
             pageTitle = "Contact Us";
+            break;
+        case '/privacy-policy':
+            pageTitle = "Privacy Policy";
             break;
         case '/blog':
             pageTitle = "Blog";
@@ -69,9 +73,10 @@ function Layout() {
                     <Routes>
                         <Route path="/" element={<HomePage />} />
                         <Route path="/source-from-suppliers" element={<SearchPage />} />
-                        <Route path="/roposo-sorter" element={<RoposoSorterRedirect />} />
+                        <Route path="/roposo-sorter" element={<RoposoSorterPage />} />
                         <Route path="/about-us" element={<AboutUsPage />} />
                         <Route path="/contact-us" element={<ContactUsPage />} />
+                        <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
                         <Route path="/blog" element={<BlogPage />} />
                         <Route path="/all-products" element={<AllProductsPage />} />
                     </Routes>
