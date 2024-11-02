@@ -21,19 +21,25 @@ logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 # IndiaMART Scraper
+import requests
+from bs4 import BeautifulSoup
+
+# @app.route('/products/indiamart', methods=['GET'])
 def search_indiamart(query):
-    url = f"https://dir.indiamart.com/search.mp?ss={query}"
-    response = requests.get(url)
-
-    if response.status_code != 200:
-        print(f"Failed to retrieve data: {response.status_code}")
-        return []
-
-    soup = BeautifulSoup(response.content, 'html.parser')
-    product_cards = soup.find_all('div', class_='card brs5')
-
     products = []
 
+    # Fetching data from the MP API
+    url_mp = f"https://dir.indiamart.com/search.mp?ss={query}"
+    response_mp = requests.get(url_mp)
+
+    if response_mp.status_code != 200:
+        print(f"Failed to retrieve MP data: {response_mp.status_code}")
+        return []
+
+    soup_mp = BeautifulSoup(response_mp.content, 'html.parser')
+    product_cards = soup_mp.find_all('div', class_='card brs5')
+    print(f"IndiaMart: Found {len(product_cards)} IndiaMart products.")
+    searchmpProductCards = 0
     for card in product_cards:
         try:
             # Extracting the product title
@@ -63,7 +69,8 @@ def search_indiamart(query):
             contact_tag = card.find('span', class_='pns_h duet fwb')
             contact_number = contact_tag.text.strip() if contact_tag else "No contact number available"
 
-            # Append product details to the list
+            # Append MP product details to the list
+            searchmpProductCards+= 1
             products.append({
                 'name': product_title,
                 'price': price,
@@ -75,8 +82,61 @@ def search_indiamart(query):
             })
 
         except Exception as e:
-            print(f"Error processing a product card: {e}")
+            print(f"Error processing a product card from MP data: {e}")
             continue
+    print(f"IndiaMart: Added {searchmpProductCards} to IndiaMart products. ")
+    # Fetching data from the RP API
+    url_rp = f"https://dir.indiamart.com/api/search.rp?ss={query}"
+    response_rp = requests.get(url_rp)
+
+    url_rp = (
+        f"https://dir.indiamart.com/api/search.rp?q={query}&options.start=14&search_type=&glusrid=223513042"
+        f"&source=dir.search&geo_country_info.geo_country_name=India&geo_country_info.geo_country_code=IN"
+        f"&implicit_info.for_country.type=India&implicit_info.for_country.data=IN"
+    )
+
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36',
+        'Accept': 'application/json',
+    }
+
+    response_rp = requests.get(url_rp, headers=headers)
+
+    if response_rp.status_code == 200:
+        try:
+            rp_data = response_rp.json()
+
+    # Check if 'results' and 'more_results' exist in the response
+            if "results" in rp_data:
+                for result in rp_data["results"]:
+                    if "more_results" in result:
+                        for item in result["more_results"]:
+                            product_title = item.get('title', "No title available")
+                            price = item.get('itemprice', "No price available")
+                            company_name = item.get('company', "No company name available")
+                            product_link = item.get('desktop_title_url', "No link available")
+                            product_image = item.get('zoomed_image', "No image available")
+                            location = item.get('city', "No location available")
+                            contact_number = item.get('contact_number', "No contact number available")
+
+                            # Append RP product details to the list
+                            products.append({
+                                'name': product_title,
+                                'price': price,
+                                'company': company_name,
+                                'url': product_link,
+                                'image': product_image,
+                                'location': location,
+                                'contact_number': contact_number,
+                            })
+
+            else:
+                print(f"Failed to retrieve RP data: {response_rp.status_code}")
+
+        except ValueError as e:
+            print(f"Error decoding JSON data from RP API: {e}")
+
+
 
     return products
 
@@ -96,7 +156,7 @@ def search_roposo_clout(query):
 
     params = {
         'offset': 0,
-        'limit': 10,
+        'limit': 100,
         'sortType': '',
         'tilesInRow': 5,
         'catalogueName': query,
@@ -120,11 +180,14 @@ def search_roposo_clout(query):
             product_list = []
             for product in products:
                 product_id = product.get('productId')
+                if product_id== -1 :
+                    continue
                 product_url = f"https://app.roposoclout.com/product/{product_id}"
 
                 # Append the cookie to the product URL for display on the website
-                cookie_for_display = 'countryPreference={"id":1,"label":"India","code":"IN"}; recSession=...; x-session-id=ac25aa44-48c6-4d4b-8671-55047522679b'
-                product_url_with_cookie = f"{product_url}; {cookie_for_display}"
+                #cookie_for_display = 'countryPreference={"id":1,"label":"India","code":"IN"}; recSession=...; x-session-id=ac25aa44-48c6-4d4b-8671-55047522679b'
+                product_url_with_cookie = f"{product_url}"
+                    # ; {cookie_for_display}"
 
                 # Use 'productName' and 'productPrice' fields, and include the first image from 'imageUrls'
                 product_list.append({
@@ -231,6 +294,30 @@ def search_sourceinfi(username, password, search_query):
 
     return products  # Return the list of products directly
 
+def search_dropdash(search_query, page_number=1, page_size=18):
+    url = f"https://api.dropdash.co/common/getallproducts?PageNumber={page_number}&PageSize={page_size}&product_name={search_query}"
+    response = requests.get(url)
+    if response.status_code == 200:
+        data = response.json()
+        products = data['data']
+        formatted_products = []
+        for product in products:
+            formatted_product = {
+                'id': product['productID'],
+                'name': product['title'],
+                'image': product['product_image'],
+                'price': product['b_2_b_price'],
+                'category': product['category_name'],
+                'stock': product['stock'],
+                'seller_id': product['sellerId'],
+            }
+            formatted_products.append(formatted_product)
+        return formatted_products
+    else:
+        print("Failed to fetch products:", response.status_code)
+        return []
+
+
 @app.route('/')
 def home():
     return "Flask is running with Gunicorn!"
@@ -245,21 +332,24 @@ def search():
     indiamart_results = search_indiamart(query)
     roposo_results = search_roposo_clout(query)
     sourceinfi_results = search_sourceinfi(email,password,query)
+    dropdash_results = search_dropdash(query)
 
     # Sort by price within each source
     indiamart_sorted = sorted(indiamart_results, key=lambda x: x['price'] if x['price'] else float('inf'))
     roposo_sorted = sorted(roposo_results, key=lambda x: x['price'] if x['price'] else float('inf'))
     sourceinfi_sorted = sorted(sourceinfi_results, key=lambda x: x['price'] if x['price'] else float('inf'))
+    dropdash_sorted = sorted(dropdash_results, key=lambda x: x['price'] if x['price'] else float('inf'))
 
     # Combine results in a format to display in three columns
     results = {
         'IndiaMart': indiamart_sorted,
         'RoposoClout': roposo_sorted,
-        'SourceInfi': sourceinfi_sorted
+        'SourceInfi': sourceinfi_sorted,
+        'DropDash': dropdash_sorted
     }
 
     return jsonify(results)
 
 if __name__ == '__main__':
-    #app.run(debug=True, host='localhost', port=8000)
+    # app.run(debug=True, host='localhost', port=8000)
     app.run()

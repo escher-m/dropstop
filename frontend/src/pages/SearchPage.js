@@ -78,7 +78,8 @@ const SearchPage = () => {
     //     window.open(`${process.env.PUBLIC_URL}/all-products?products=${encodedProducts}&source=${source}`, '_blank');
         const allProducts = JSON.stringify(results[source]);
         localStorage.setItem('allProducts', allProducts); // Store products in local storage
-        window.open(`${process.env.PUBLIC_URL}/all-products?source=${source}`, '_blank');
+        // window.open(`${process.env.PUBLIC_URL}/all-products?source=${source}`, '_blank');
+        window.open(`https://escher-m.github.io/${process.env.PUBLIC_URL}/all-products?source=${source}`, '_blank');
     };
 
 

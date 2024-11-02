@@ -5,7 +5,7 @@
     justify-content: space-between;
     align-items: flex-start; /* Align items to the top */
     padding: 10px 20px;
-    height: 100px; /* Increased height */
+    /*height: 100px; !* Increased height *!*/
     border-bottom: 2px solid #f0c418; /* Yellow border to tie it all together */
 }
 

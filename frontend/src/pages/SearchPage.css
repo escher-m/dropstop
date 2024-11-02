@@ -30,6 +30,7 @@ body {
 
 .search-button {
     padding: 15px 20px;
+    /*display: flex;*/
     background-color: #4CAF50;
     color: white;
     border: none;
@@ -40,6 +41,42 @@ body {
 
 .search-button:hover {
     background-color: #45a049;
+}
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .byline {
+        font-size: 1.2em; /* Smaller font for smaller screens */
+        margin: 40px 0;
+    }
+
+    .search-input {
+        width: 250px;
+        font-size: 1rem;
+        padding: 12px;
+    }
+
+    .search-button {
+        padding: 12px 18px;
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .byline {
+        font-size: 1em;
+        margin: 30px 0;
+    }
+
+    .search-input {
+        width: 200px;
+        font-size: 0.9rem;
+        padding: 10px;
+    }
+
+    .search-button {
+        padding: 10px 15px;
+        font-size: 0.9rem;
+    }
 }
 
 .results-container {
